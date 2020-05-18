@@ -24,19 +24,20 @@ struct TSStatus {
   2: optional string message
 }
 
-struct TSExecuteStatementResp {
-	1: required TSStatus status
-	2: optional i64 queryId
-  // Column names in select statement of SQL
-	3: optional list<string> columns
-	4: optional string operationType
-	5: optional bool ignoreTimeStamp
-  // Data type list of columns in select statement of SQL
-  6: optional list<string> dataTypeList
-  7: optional TSQueryDataSet queryDataSet
-  // for disable align statements, queryDataSet is null and nonAlignQueryDataSet is not null
-  8: optional TSQueryNonAlignDataSet nonAlignQueryDataSet
-  9: optional map<string, i32> columnNameIndexMap
+struct TSQueryDataSet{
+    // ByteBuffer for time column
+    1: required binary time
+    // ByteBuffer for each column values
+    2: required list<binary> valueList
+    // Bitmap for each column to indicate whether it is a null value
+    3: required list<binary> bitmapList
+}
+
+struct TSQueryNonAlignDataSet{
+    // ByteBuffer for each time column
+	  1: required list<binary> timeList
+	  // ByteBuffer for each column values
+    2: required list<binary> valueList
 }
 
 enum TSProtocolVersion {
@@ -237,22 +238,20 @@ struct ServerProperties {
 	3: required string timestampPrecision;
 }
 
-struct TSQueryDataSet{
-    // ByteBuffer for time column
-    1: required binary time
-    // ByteBuffer for each column values
-    2: required list<binary> valueList
-    // Bitmap for each column to indicate whether it is a null value
-    3: required list<binary> bitmapList
+struct TSExecuteStatementResp {
+	1: required TSStatus status
+	2: optional i64 queryId
+  // Column names in select statement of SQL
+	3: optional list<string> columns
+	4: optional string operationType
+	5: optional bool ignoreTimeStamp
+  // Data type list of columns in select statement of SQL
+  6: optional list<string> dataTypeList
+  7: optional TSQueryDataSet queryDataSet
+  // for disable align statements, queryDataSet is null and nonAlignQueryDataSet is not null
+  8: optional TSQueryNonAlignDataSet nonAlignQueryDataSet
+  9: optional map<string, i32> columnNameIndexMap
 }
-
-struct TSQueryNonAlignDataSet{
-    // ByteBuffer for each time column
-	  1: required list<binary> timeList
-	  // ByteBuffer for each column values
-    2: required list<binary> valueList
-}
-
 
 service TSIService {
 	TSOpenSessionResp openSession(1:TSOpenSessionReq req);
