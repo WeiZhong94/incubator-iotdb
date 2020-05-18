@@ -39,7 +39,7 @@ struct ConfirmInfo{
 }
 
 service SyncService{
-	SyncStatus check(ConfirmInfo info)
+	SyncStatus check(1:ConfirmInfo info)
 	SyncStatus startSync();
 	SyncStatus init(1:string storageGroupName)
 	SyncStatus syncDeletedFileName(1:string fileName)
