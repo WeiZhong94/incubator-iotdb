@@ -26,7 +26,7 @@ RUN apt update \
   && rm -rf jdk11.tar.gz \
   && export JAVA_HOME=/jdk-11.0.2/ \
   && export PATH="$JAVA_HOME/bin:$PATH" \
-  && wget https://github.com/apache/incubator-iotdb/archive/master.zip \
+  && wget https://github.com/WeiZhong94/incubator-iotdb/archive/master.zip \
   && unzip master.zip \
   && rm master.zip \
   && cd incubator-iotdb-master \
